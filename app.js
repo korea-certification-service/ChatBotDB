@@ -25,10 +25,12 @@ let sentence = require('./routes/sentence');
 let answer = require('./routes/answer');
 let history = require('./routes/history');
 let manage = require('./routes/manage');
+let exception = require('./routes/exception');
 app.use('/sentence', sentence);
 app.use('/answer', answer);
 app.use('/history', history);
 app.use('/manage', manage);
+app.use('/exception', exception);
 
 app.listen(port, () => {
     console.log(`Express server has started on port ${port}`);

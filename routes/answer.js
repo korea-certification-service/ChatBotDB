@@ -24,14 +24,9 @@ router.post('/add', (req, res) => {
 });
 
 //Retrieve GET API
-// router.get('/get/list', (req, res) => {
+router.get('/get/list', (req, res) => {
 
-//     Answer.find();
-
-// });
-router.get('/get/detail', (req, res) => {
-
-    Answer.findOne({ "input_code": req.body.input_code },(err, answer) => {
+    Answer.find({ "input_code": req.body.input_code },(err, answer) => {
         if(err) return res.status(500).send({error: 'database failure'});
         res.json(answer);
         console.log(answer);
