@@ -2,8 +2,8 @@ let express = require('express');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let cors = require('cors')();
+let config = require('./config/config');
 let app = express();
-let port = 6001;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
@@ -12,13 +12,12 @@ app.use(cors);
 // [ CONFIGURE mongoose ]
 // CONNECT TO MONGODB SERVER
 let db = mongoose.connection;
-let db_url = "//dev:daiblab123@localhost:11000/bitweb";
 db.on('error', console.error);
 db.once('open', function(){
     // CONNECTED TO MONGODB SERVER
-    console.log("Connected to mongod server");
+    console.log(`Connected to mongod server => ${config.db_url}`);
 });
-mongoose.connect(`mongodb:${db_url}`);
+mongoose.connect(`mongodb:${config.db_url}`);
 
 //route API
 let sentence = require('./routes/sentence');
@@ -32,6 +31,6 @@ app.use('/history', history);
 app.use('/manage', manage);
 app.use('/exception', exception);
 
-app.listen(port, () => {
-    console.log(`Express server has started on port ${port}`);
+app.listen(config.port, () => {
+    console.log(`Express server has started on port ${config.port}`);
 });

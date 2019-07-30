@@ -25,11 +25,19 @@ router.post('/add', (req, res) => {
 });
 
 //Retrieve GET API
-// router.get('/get/list', (req, res) => {
+router.get('/get/list', (req, res) => {
 
-//     Sentence.find();
+    let jsonObj = JSON.parse(JSON.stringify(req.body));
 
-// });
+    console.log(jsonObj);
+
+    Sentence.find(jsonObj,(err, sentence) => {
+        if(err) return res.status(500).send({error: 'database failure'});
+        res.json(sentence);
+        console.log(sentence);
+    });
+
+});
 router.get('/get/detail', (req, res) => {
 
     let jsonObj = JSON.parse(JSON.stringify(req.body));

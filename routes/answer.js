@@ -7,10 +7,10 @@ router.post('/add', (req, res) => {
     let answer = new Answer();
 
     answer.input_code = req.body.input_code
-    answer.answer_position = req.body.answer_position
-    answer.answer_code = req.body.answer_code
+    answer.answer_position = null
+    answer.answer_code = null
     answer.answer_text_ko = req.body.answer_text_ko
-    answer.answer_action = req.body.answer_action
+    answer.answer_action = null
 
     answer.save( (err) => {
         if(err){
@@ -26,20 +26,37 @@ router.post('/add', (req, res) => {
 //Retrieve GET API
 router.get('/get/list', (req, res) => {
 
-    Answer.find({ "input_code": req.body.input_code },(err, answer) => {
+    let jsonObj = JSON.parse(JSON.stringify(req.body));
+
+    console.log(req.body);
+
+    Answer.find(jsonObj,(err, raw) => {
         if(err) return res.status(500).send({error: 'database failure'});
-        res.json(answer);
-        console.log(answer);
+        res.json(raw);
+        //console.log(answer);
     });
 
 });
 
 //Update PUT API
-// router.put('/update', (req, res) => {
-
-//     Answer.update();
-
-// });
+router.put('/update', (req, res) => {
+    console.log(req.body);
+    Answer.findOneAndUpdate(
+        {
+            "input_code": req.body.input_code
+        },
+        {
+            $set: { "answer_text_ko": req.body.answer_text_ko }
+        },
+        {
+            upsert: false, 
+            new: true
+        },
+        function(err, raw) {
+            if (err) return res.status(500).send({error: 'update failure'});
+            res.json(raw);
+        })
+});
 
 //Delete DELETE API
 // router.delete('/delete', (req, res) => {
