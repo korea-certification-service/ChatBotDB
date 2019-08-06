@@ -53,17 +53,34 @@ router.get('/get/detail', (req, res) => {
 });
 
 //Update PUT API
-// router.put('/update', (req, res) => {
+router.put('/update', (req, res) => {
 
-//     Sentence.update();
+    console.log(req.body);
+    Sentence.findOneAndUpdate(
+        {
+            "input_code": req.body.input_code
+        },
+        {
+            $set: { "input_code": req.body.ed_input_code }
+        },
+        {
+            upsert: false, 
+            new: true
+        },
+        (err, raw) => {
+            if (err) return res.status(500).send({error: 'update failure'});
+            res.json(raw);
+        })
     
-// });
+});
 
 //Delete DELETE API
-// router.delete('/delete', (req, res) => {
-
-//     Sentence.remove();
-    
-// });
+router.delete('/delete', (req, res) => {
+    console.log(req.body);
+    Sentence.remove({ _id: req.body._id }, (err, output) => {
+        if(err) return res.status(500).json({ error: "delete failure" });
+        res.status(204).send();
+    })
+});
 
 module.exports = router;

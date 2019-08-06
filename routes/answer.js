@@ -4,14 +4,17 @@ let Answer = require('../models/answer');
 
 //Create POST API
 router.post('/add', (req, res) => {
+    console.log(req.body);
     let answer = new Answer();
 
     answer.input_code = req.body.input_code
     answer.answer_position = null
     answer.answer_code = null
+    answer.answer_text_en = req.body.answer_text_en
     answer.answer_text_ko = req.body.answer_text_ko
     answer.answer_action = null
 
+    console.log(answer);
     answer.save( (err) => {
         if(err){
             console.error(err);
@@ -20,7 +23,6 @@ router.post('/add', (req, res) => {
         }
         res.json({result: 1});
     });
-
 });
 
 //Retrieve GET API
@@ -59,10 +61,12 @@ router.put('/update', (req, res) => {
 });
 
 //Delete DELETE API
-// router.delete('/delete', (req, res) => {
-
-//     Answer.remove();
-
-// });
+router.delete('/delete', (req, res) => {
+    console.log(req.body);
+    Answer.remove({ _id: req.body._id }, (err, raw) => {
+        if(err) return res.status(500).json({ error: "delete failure" });
+        res.status(204).send(raw);
+    })
+});
 
 module.exports = router;
