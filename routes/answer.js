@@ -41,7 +41,7 @@ router.get('/get/list', (req, res) => {
 });
 
 //Update PUT API
-router.put('/update', (req, res) => {
+router.put('/update/answer_text_ko', (req, res) => {
     console.log(req.body);
     Answer.findOneAndUpdate(
         {
@@ -49,6 +49,25 @@ router.put('/update', (req, res) => {
         },
         {
             $set: { "answer_text_ko": req.body.answer_text_ko }
+        },
+        {
+            upsert: false, 
+            new: true
+        },
+        function(err, raw) {
+            if (err) return res.status(500).send({error: 'update failure'});
+            res.json(raw);
+        })
+});
+
+router.put('/update/answer_text_en', (req, res) => {
+    console.log(req.body);
+    Answer.findOneAndUpdate(
+        {
+            "input_code": req.body.input_code
+        },
+        {
+            $set: { "answer_text_en": req.body.answer_text_en }
         },
         {
             upsert: false, 
