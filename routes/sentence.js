@@ -58,10 +58,10 @@ router.put('/update', (req, res) => {
     console.log(req.body);
     Sentence.findOneAndUpdate(
         {
-            "input_code": req.body.input_code
+            "_id": req.body._id
         },
         {
-            $set: { "input_code": req.body.ed_input_code }
+            $set: { "input_code": req.body.input_code }
         },
         {
             upsert: false, 

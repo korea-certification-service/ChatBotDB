@@ -45,7 +45,7 @@ router.put('/update/answer_text_ko', (req, res) => {
     console.log(req.body);
     Answer.findOneAndUpdate(
         {
-            "input_code": req.body.input_code
+            "_id": req.body._id
         },
         {
             $set: { "answer_text_ko": req.body.answer_text_ko }
@@ -55,7 +55,7 @@ router.put('/update/answer_text_ko', (req, res) => {
             new: true
         },
         function(err, raw) {
-            if (err) return res.status(500).send({error: 'update failure'});
+            if (err) return res.status(500).send({error: 'update failure', err: err});
             res.json(raw);
         })
 });
@@ -64,7 +64,7 @@ router.put('/update/answer_text_en', (req, res) => {
     console.log(req.body);
     Answer.findOneAndUpdate(
         {
-            "input_code": req.body.input_code
+            "_id": req.body._id
         },
         {
             $set: { "answer_text_en": req.body.answer_text_en }
@@ -74,7 +74,7 @@ router.put('/update/answer_text_en', (req, res) => {
             new: true
         },
         function(err, raw) {
-            if (err) return res.status(500).send({error: 'update failure'});
+            if (err) return res.status(500).send({error: 'update failure',err: errr});
             res.json(raw);
         })
 });
