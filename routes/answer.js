@@ -35,7 +35,18 @@ router.get('/get/list', (req, res) => {
     Answer.find(jsonObj,(err, raw) => {
         if(err) return res.status(500).send({error: 'database failure'});
         res.json(raw);
-        //console.log(answer);
+    });
+
+});
+
+router.get('/get/:input_code', (req, res) => {
+
+    console.log(req.params);
+
+    Answer.find({ "input_code": req.params.input_code },(err, raw) => {
+        if(err) return res.status(500).send({error: 'database failure'});
+        res.json(raw);
+        console.log(raw);
     });
 
 });
