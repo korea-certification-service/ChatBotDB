@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let Manage = require('../models/manage');
+let db = require('../utils/db');
 
 //Create POST API
 router.post('/add', (req, res) => {
@@ -12,15 +13,24 @@ router.post('/add', (req, res) => {
     manage.answer_id = req.body.answer_id
     manage.admin_id = req.body.admin_id
     manage.status = req.body.status
+    db.connectDB()
+        .then(() => {
+            manage.save((err) => {
+                if (err) {
+                    console.error(err);
+                    res.json({
+                        result: 0
+                    });
+                    return;
+                }
+                res.json({
+                    result: 1
+                });
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
 
-    manage.save( (err) => {
-        if(err){
-            console.error(err);
-            res.json({result: 0});
-            return;
-        }
-        res.json({result: 1});
-    });
 
 });
 
@@ -40,14 +50,14 @@ router.post('/add', (req, res) => {
 // router.put('/update', (req, res) => {
 
 //     Manage.update();
-    
+
 // });
 
 //Delete DELETE API
 // router.delete('/delete', (req, res) => {
 
 //     Manage.remove();
-    
+
 // });
 
 module.exports = router;

@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let Sentence = require('../models/sentence');
+let db = require('../utils/db');
 
 //Create POST API
 router.post('/add', (req, res) => {
@@ -12,15 +13,24 @@ router.post('/add', (req, res) => {
     sentence.ko_sentence = req.body.ko_sentence
     sentence.input_code = req.body.input_code
     sentence.keyword = req.body.keyword
+    db.connectDB()
+        .then(() => {
+            sentence.save((err) => {
+                if (err) {
+                    console.error(err);
+                    res.json({
+                        result: 0
+                    });
+                    return;
+                }
+                res.json({
+                    result: 1
+                });
+            });
+        }).catch((err) => {
 
-    sentence.save( (err) => {
-        if(err){
-            console.error(err);
-            res.json({result: 0});
-            return;
-        }
-        res.json({result: 1});
-    });
+        });
+
 
 });
 
@@ -30,12 +40,19 @@ router.get('/get/list', (req, res) => {
     let jsonObj = JSON.parse(JSON.stringify(req.body));
 
     console.log(jsonObj);
+    db.connectDB()
+        .then(() => {
+            Sentence.find(jsonObj, (err, sentence) => {
+                if (err) return res.status(500).send({
+                    error: 'database failure'
+                });
+                res.json(sentence);
+                console.log(sentence);
+            });
+        }).catch((err) => {
 
-    Sentence.find(jsonObj,(err, sentence) => {
-        if(err) return res.status(500).send({error: 'database failure'});
-        res.json(sentence);
-        console.log(sentence);
-    });
+        });
+
 
 });
 router.get('/get/detail', (req, res) => {
@@ -43,12 +60,19 @@ router.get('/get/detail', (req, res) => {
     let jsonObj = JSON.parse(JSON.stringify(req.body));
 
     console.log(jsonObj);
+    db.connectDB()
+        .then(() => {
+            Sentence.findOne(jsonObj, (err, sentence) => {
+                if (err) return res.status(500).send({
+                    error: 'database failure'
+                });
+                res.json(sentence);
+                console.log(sentence);
+            });
+        }).catch((err) => {
 
-    Sentence.findOne(jsonObj,(err, sentence) => {
-        if(err) return res.status(500).send({error: 'database failure'});
-        res.json(sentence);
-        console.log(sentence);
-    });
+        });
+
 
 });
 
@@ -56,31 +80,48 @@ router.get('/get/detail', (req, res) => {
 router.put('/update', (req, res) => {
 
     console.log(req.body);
-    Sentence.findOneAndUpdate(
-        {
-            "_id": req.body._id
-        },
-        {
-            $set: { "input_code": req.body.input_code }
-        },
-        {
-            upsert: false, 
-            new: true
-        },
-        (err, raw) => {
-            if (err) return res.status(500).send({error: 'update failure'});
-            res.json(raw);
-        })
-    
+    db.connectDB()
+        .then(() => {
+            Sentence.findOneAndUpdate({
+                    "_id": req.body._id
+                }, {
+                    $set: {
+                        "input_code": req.body.input_code
+                    }
+                }, {
+                    upsert: false,
+                    new: true
+                },
+                (err, raw) => {
+                    if (err) return res.status(500).send({
+                        error: 'update failure'
+                    });
+                    res.json(raw);
+                })
+        }).catch((err) => {
+
+        });
+
+
 });
 
 //Delete DELETE API
 router.delete('/delete', (req, res) => {
     console.log(req.body);
-    Sentence.remove({ _id: req.body._id }, (err, output) => {
-        if(err) return res.status(500).json({ error: "delete failure" });
-        res.status(204).send();
-    })
+    db.connectDB()
+        .then(() => {
+            Sentence.remove({
+                _id: req.body._id
+            }, (err, output) => {
+                if (err) return res.status(500).json({
+                    error: "delete failure"
+                });
+                res.status(204).send();
+            })
+        }).catch((err) => {
+
+        });
+
 });
 
 module.exports = router;
