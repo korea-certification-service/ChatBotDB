@@ -3,7 +3,7 @@ let router = express.Router();
 let Answer = require('../models/answer');
 let db = require('../utils/db');
 
-//Create POST API
+//answer 도큐먼트 생성
 router.post('/add', (req, res) => {
     console.log(req.body);
     let answer = new Answer();
@@ -37,7 +37,7 @@ router.post('/add', (req, res) => {
 
 });
 
-//Retrieve GET API
+//answer 도큐먼트 목록 조회
 router.get('/get/list', (req, res) => {
 
     let jsonObj = JSON.parse(JSON.stringify(req.body));
@@ -79,7 +79,7 @@ router.get('/get/:input_code', (req, res) => {
 
 });
 
-//Update PUT API
+//answer 한글버전 도큐먼트 수정
 router.put('/update/answer_text_ko', (req, res) => {
     console.log(req.body);
     db.connectDB()
@@ -107,6 +107,7 @@ router.put('/update/answer_text_ko', (req, res) => {
 
 });
 
+//answer 영어버전 도큐먼트 수정
 router.put('/update/answer_text_en', (req, res) => {
     console.log(req.body);
     db.connectDB()
@@ -134,7 +135,7 @@ router.put('/update/answer_text_en', (req, res) => {
 
 });
 
-//Delete DELETE API
+//answer 도큐먼트 삭제
 router.delete('/delete', (req, res) => {
     console.log(req.body);
     db.connectDB()

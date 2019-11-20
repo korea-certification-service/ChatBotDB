@@ -3,7 +3,7 @@ let router = express.Router();
 let Manage = require('../models/manage');
 let db = require('../utils/db');
 
-//Create POST API
+//manage 도큐먼트 생성
 router.post('/add', (req, res) => {
     let manage = new Manage();
 

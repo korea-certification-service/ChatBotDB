@@ -3,7 +3,7 @@ let router = express.Router();
 let Exception = require('../models/exception');
 let db = require('../utils/db');
 
-//Create POST API
+//exception 도큐먼트 추가
 router.post('/add', (req, res) => {
     let exception = new Exception();
     exception.exception_code = req.body.exception_code;
@@ -36,6 +36,8 @@ router.post('/add', (req, res) => {
 //     History.find();
 
 // });
+
+//exception 상세 조회
 router.get('/get/detail', (req, res) => {
 
     let jsonObj = JSON.parse(JSON.stringify(req.body));

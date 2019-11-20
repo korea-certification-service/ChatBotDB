@@ -3,7 +3,7 @@ let router = express.Router();
 let History = require('../models/history');
 let db = require('../utils/db');
 
-//Create POST API
+//history 도큐먼트 생성
 router.post('/add', (req, res) => {
     let history = new History();
 

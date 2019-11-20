@@ -3,7 +3,7 @@ let router = express.Router();
 let Sentence = require('../models/sentence');
 let db = require('../utils/db');
 
-//Create POST API
+//sentence 도큐먼트 생성
 router.post('/add', (req, res) => {
     console.log(req.body);
     let sentence = new Sentence();
@@ -34,7 +34,7 @@ router.post('/add', (req, res) => {
 
 });
 
-//Retrieve GET API
+//sentence 도큐먼트 목록 조회
 router.get('/get/list', (req, res) => {
 
     let jsonObj = JSON.parse(JSON.stringify(req.body));
@@ -55,6 +55,8 @@ router.get('/get/list', (req, res) => {
 
 
 });
+
+//sentence 도큐먼트 상세 조회
 router.get('/get/detail', (req, res) => {
 
     let jsonObj = JSON.parse(JSON.stringify(req.body));
@@ -76,7 +78,7 @@ router.get('/get/detail', (req, res) => {
 
 });
 
-//Update PUT API
+//sentence 도큐먼트 수정
 router.put('/update', (req, res) => {
 
     console.log(req.body);
@@ -105,7 +107,7 @@ router.put('/update', (req, res) => {
 
 });
 
-//Delete DELETE API
+//sentence 도큐먼트 삭제
 router.delete('/delete', (req, res) => {
     console.log(req.body);
     db.connectDB()
